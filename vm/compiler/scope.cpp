@@ -354,7 +354,7 @@ void InlinedScope::createContextTemporaries(int nofTemps) {
     // replaced old assertion with the one below. Since assert disappears in the
     // fast version, put in a warning so that we can look at this if it happens
     // again (couldn't re-create the situation yet) - gri 5/10/96
-    assert(isMethodScope() || isBlockScope() && method()->block_info() == methodOopDesc::expects_nil, "check this");
+    assert(isMethodScope() || (isBlockScope() && method()->block_info() == methodOopDesc::expects_nil), "check this");
     //if (isBlockScope()) warning("possibly a bug in InlinedScope::createContextTemporaries - tell Robert");
     _context = new SAPReg(this, PrologueBCI, EpilogueBCI);
   }

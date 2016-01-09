@@ -95,6 +95,7 @@ int nmethodScopes::unpackValueAt(int& offset) const {
 
 
 NameDesc* nmethodScopes::unpackNameDescAt(int& offset, bool& is_last, char* pc) const {
+  //TODO(jirka): change is_last to be a pointer and pc a const, swap order
   int startOffset = offset;
   nameDescHeaderByte b;
   b.unpack(get_next_char(offset));
@@ -202,9 +203,9 @@ void nmethodScopes::scavenge_contents() {
 }
 
 
-void nmethodScopes::switch_pointers(oop from, oop to,
+void nmethodScopes::switch_pointers(oop from, oop /*to*/,
 				    GrowableArray<nmethod*> *nmethods_to_invalidate) {
-  Unused(to);
+  // TODO(jirka): massive comment and unused code, figure out what do do with this
 /*
   This is tricky!
   First, since some inlined methods are not included in scopes

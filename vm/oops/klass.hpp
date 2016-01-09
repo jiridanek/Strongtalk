@@ -219,7 +219,7 @@ class Klass : ValueObj {
  // These functions describe behavior for the oop not the KLASS.
  public:
   // actual oop size of obj in memory
-  virtual int oop_size(oop obj) const { return non_indexable_size(); }
+  virtual int oop_size(oop /*obj*/) const { return non_indexable_size(); }
 
   // Returns the header size for an instance of this klass
   virtual int oop_header_size() const { return 0; }

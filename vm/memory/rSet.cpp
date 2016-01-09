@@ -43,7 +43,7 @@ OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISE
 // 1. Optimization suggested by Urs 9/30/95
 //    Speed up card scanning by comparing words for frequent case
 //    (A profile of Mark Sweep is necessary to make the call).
-// 2. Handle objArrays in a more effficient way. Scavenge only
+// 2. Handle objArrays in a more efficient way. Scavenge only
 //    parts of the objArray with dirty cards.
 //    The current implementation is REALLY slow for huge tenured objArrays
 //    with few new pointers.
@@ -131,7 +131,7 @@ char* rSet::scavenge_contents(oldSpace* sp, char* begin, char* limit) {
   while (s < e) {
     memOop m = as_memOop(s);
     int size = m->scavenge_tenured_contents();
-    assert(size = m->size(), "just checking");
+    assert(size == m->size(), "just checking");
     s += size;
   }
   return end;

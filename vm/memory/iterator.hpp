@@ -39,7 +39,7 @@ class ObjectClosure : StackObj {
   // Called when entering a space.
   virtual void begin_space(space* s) {}
   // Called when exiting a space.
-  virtual void end_space(space* s)   {}
+  virtual void end_space(space* s) {}
   // Called for each object.
   virtual void do_object(memOop obj) {}
 };
@@ -50,9 +50,9 @@ class ObjectFilterClosure : public ObjectClosure {
  public:
   // Called for each object and returns whether
   // do_filteres_objects should be called.
-  virtual bool include_object(memOop obj) { return true; }
+  virtual bool include_object(memOop /*obj*/) { return true; }
   // Called for each object where include_object returns true.
-  virtual void do_filtered_object(memOop obj) {}
+  virtual void do_filtered_object(memOop obj) = 0;
 };
 
 // ObjectLayoutClosure is a closure for iterating through the
@@ -61,31 +61,31 @@ class ObjectLayoutClosure : StackObj {
  public:
   // NON INDEXABLE PART
   // Called for the markOop
-  virtual void do_mark(markOop *m) {}
+  virtual void do_mark(markOop *m) = 0;
   // Called for each oop
-  virtual void do_oop(char* title, oop* o) {}
+  virtual void do_oop(char* title, oop* o) = 0;
   // Called for each byte
-  virtual void do_byte(char* title, u_char* b) {}
+  virtual void do_byte(char* title, u_char* b) = 0;
   // Called for each long
-  virtual void do_long(char* title, void** p) {}
+  virtual void do_long(char* title, void** p) = 0;
   // Called for each double
-  virtual void do_double(char* title, double* d) {}
+  virtual void do_double(char* title, double* d) = 0;
 
   // INDEXABLE PART
   // Called before iterating through the indexable part.
   // ONLY called if the object has an indexable part.
-  virtual void begin_indexables() {}
+  virtual void begin_indexables() = 0;
   // Called after iterating through the indexable part.
   // ONLY called if the object has an indexable part.
-  virtual void end_indexables() {}
+  virtual void end_indexables() = 0;
   // Called for each indexable oop
-  virtual void do_indexable_oop(int index, oop* o) {}
+  virtual void do_indexable_oop(int index, oop* o) = 0;
   // Called for each indexable byte
-  virtual void do_indexable_byte(int index, u_char* b) {}
+  virtual void do_indexable_byte(int index, u_char* b) = 0;
   // Called for each indexable double byte
-  virtual void do_indexable_doubleByte(int index, doubleByte* b) {}
+  virtual void do_indexable_doubleByte(int index, doubleByte* b) = 0;
   // Called for each indexable long
-  virtual void do_indexable_long(int index, long* l) {}
+  virtual void do_indexable_long(int index, long* l) = 0;
 };
 
 // A FrameClosure is used for iterating though frames
@@ -103,22 +103,22 @@ class FrameClosure : StackObj {
 class FrameLayoutClosure : StackObj {
  public:
   // Called for each oop 
-  virtual void do_stack(int index, oop* o) {}
+  virtual void do_stack(int index, oop* o) = 0;
   // Called for the hcode pointer
-  virtual void do_hp(u_char** hp) {}
+  virtual void do_hp(u_char** hp) = 0;
   // Called for the receiver 
-  virtual void do_receiver(oop* o) {}
+  virtual void do_receiver(oop* o) = 0;
   // Called for the link 
-  virtual void do_link(int** fp) {}
+  virtual void do_link(int** fp) = 0;
   // Called for the return address 
-  virtual void do_return_addr(char** pc) {}
+  virtual void do_return_addr(char** pc) = 0;
 };
 
 // A ProcessClosure is used for iterating over Delta processes
 class ProcessClosure : StackObj {
  public:
   // Called for each process
-  virtual void do_process(DeltaProcess* p) {}
+  virtual void do_process(DeltaProcess* p) = 0;
 };
 
 // A OopClosure is used for iterating through oops
@@ -126,7 +126,7 @@ class ProcessClosure : StackObj {
 class OopClosure : StackObj {
  public:
   // Called for each oop
-  virtual void do_oop(oop* o) {}
+  virtual void do_oop(oop* o) = 0;
 };
 
 // A klassOopClosure is used for iterating through klassOops
@@ -134,6 +134,6 @@ class OopClosure : StackObj {
 class klassOopClosure : StackObj {
  public:
   // Called for each oop
-  virtual void do_klass(klassOop klass) {}
+  virtual void do_klass(klassOop klass) = 0;
 };
 

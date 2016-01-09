@@ -184,11 +184,11 @@ class BasicNode: public PrintableResourceObj {
   int loopDepth() const				{ return _bb->loopDepth(); }
 
   virtual BB* newBB();
-  virtual void makeUses(BB* bb) { Unused(bb); }
-  virtual void removeUses(BB* bb) { Unused(bb); }
+  virtual void makeUses(BB* /*bb*/) { }
+  virtual void removeUses(BB* /*bb*/) { }
   virtual void eliminate(BB* bb, PReg* r, bool removing = false, bool cp = false) = 0;
   virtual bool canBeEliminated() const { return !dontEliminate; }
-  virtual void computeEscapingBlocks(GrowableArray<BlockPReg*>* lst) { Unused(lst); }
+  virtual void computeEscapingBlocks(GrowableArray<BlockPReg*>* /*lst*/) { }
   virtual void markAllocated(int* use_count, int* def_count) = 0;
   virtual SimpleBitVector trashedMask();
   virtual void gen();
@@ -260,7 +260,7 @@ class Node: public BasicNode {
   virtual void movePrev(Node* from, Node* to)		{ assert(_prev == from, "mismatched prev link"); _prev = to; }
 
   void setNext(Node* n)					{ assert(_next == NULL, "already set"); _next = n; }
-  virtual void setNext1(Node* n)			{ Unused(n); ShouldNotCallThis(); }
+  virtual void setNext1(Node* /*n*/)			{ ShouldNotCallThis(); }
   virtual void setNext(int i, Node* n)			{ if (i == 0) setNext(n); else fatal("subclass"); }
   virtual void moveNext(Node* from, Node* to)		{ assert(_next == from, "mismatched next link"); _next = to; }
 
@@ -348,8 +348,7 @@ class PrologueNode : public NonTrivialNode {
   void gen();
   void apply(NodeVisitor* v)		{ v->aPrologueNode(this); }
   bool canBeEliminated() const 		{ return false; }
-  void markAllocated(int* use_count, int* def_count) {
-    Unused(use_count); Unused(def_count); }
+  void markAllocated(int* /*use_count*/, int* /*def_count*/) { }
   char* print_string(char* buf, bool printAddr = true) const;
 
   friend class NodeFactory;
@@ -594,7 +593,7 @@ class AbstractReturnNode: public NonTrivialNode {
   void	makeUses(BB* bb);
   void	removeUses(BB* bb);
   void	computeEscapingBlocks(GrowableArray<BlockPReg*>* l);
-  void	markAllocated(int* use_count, int* def_count) { Unused(use_count); Unused(def_count); }
+  void	markAllocated(int* /*use_count*/, int* /*def_count*/) { }
 
   friend class NodeFactory;
 };
@@ -1109,7 +1108,7 @@ class InterruptCheckNode : public PrimNode {
  public:
   Node*	clone(PReg* from, PReg* to) const;
   void	gen();
-  void	apply(NodeVisitor* v)		{ Unimplemented(); }
+  void	apply(NodeVisitor* /*v*/)		{ Unimplemented(); }
   char*	print_string(char* buf, bool printAddr = true) const;
 
   friend void node_init();
@@ -1149,7 +1148,7 @@ class LoopHeaderNode : public TrivialNode {
   LoadOffsetNode*			upperLoad() const	{ return _upperLoad; }
   GrowableArray<AbstractArrayAtNode*>*	arrayAccesses() const	{ return _arrayAccesses; }
   GrowableArray<HoistedTypeTest*>*	tests() const		{ return _tests; }
-  Node*	clone(PReg* from, PReg* to) const			{ ShouldNotCallThis(); return NULL; }
+  Node*	clone(PReg* /*from*/, PReg* /*to*/) const			{ ShouldNotCallThis(); return NULL; }
   int   nofCallsInLoop() const					{ return _nofCalls; }
   void  set_nofCallsInLoop(int n)				{ _nofCalls = n; }
   void  activate(PReg* loopVar, PReg* lowerBound, PReg* upperBound, LoadOffsetNode* upperLoad);
@@ -1370,7 +1369,7 @@ class NLRTestNode: public AbstractBranchNode {
   void	makeUses(BB* bb);
   void	removeUses(BB* bb);
   // void eliminate(BB* bb, PReg* r, bool removing = false, bool cp = false);
-  void	markAllocated(int* use_count, int* def_count) {};
+  void	markAllocated(int* /*use_count*/, int* /*def_count*/) {}
   Node*	likelySuccessor() const;
   Node* uncommonSuccessor() const;
   void	gen();
@@ -1401,7 +1400,7 @@ class BranchNode : public AbstractBranchNode {
   bool		canFail() const			{ return false; }
   void		eliminateBranch(int op1, int op2, int res);
   void		eliminate(BB* bb, PReg* r, bool removing = false, bool cp = false);
-  void		markAllocated(int* use_count, int* def_count) { Unused(use_count); Unused(def_count); }
+  void		markAllocated(int* /*use_count*/, int* /*def_count*/) {}
   Node*		clone(PReg* from, PReg* to) const;
   Node*		likelySuccessor() const;
   Node*		uncommonSuccessor() const;
@@ -1486,7 +1485,7 @@ class AbstractArrayAtNode : public AbstractBranchNode {
  public:
   bool	hasSrc() const 			{ return true; }
   bool	hasDest() const 		{ return _dest != NULL; }
-  bool  canFail() const = 0;
+   virtual bool  canFail() const = 0;
   int	cost() const	     		{ return 20 + (_intArg ? 0 : 12); } // fix this
   bool	canCopyPropagate() const	{ return true; }
   int   sizeOffset() const		{ return _sizeOffset; }
@@ -1702,7 +1701,7 @@ class UncommonNode : public NonTrivialNode {
   bool	isExitNode() const		{ return true; }
   bool	isEndsBB() const		{ return true; }
   virtual Node*	clone(PReg* from, PReg* to) const;
-  void	markAllocated(int* use_count, int* def_count) { Unused(use_count); Unused(def_count); }
+  void	markAllocated(int* /*use_count*/, int* /*def_count*/) {}
   void	gen();
   void	apply(NodeVisitor* v)		{ v->anUncommonNode(this); }
   void	verify() const;

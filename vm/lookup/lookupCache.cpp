@@ -112,7 +112,7 @@ class cacheElement { // : ValueObj {
       } else if (result.is_entry() && result.get_nmethod() != nm) {
 	error("key %s: nmethod does not match codeTable nmethod", key.print_string());
       }
-      if (UseInliningDatabaseEagerly && result.is_method() && InliningDatabase::lookup(&key) != NULL) {
+	  if (UseInliningDatabaseEagerly && result.is_method() && InliningDatabase::lookup(&key)) {
 	error("key %s: interpreted method in lookupTable despite inlining DB entry", key.print_string());
       }
     }
@@ -246,7 +246,7 @@ inline LookupResult lookupCache::lookup(LookupKey* key, bool compile) {
   number_of_misses++;
   LookupResult result = cache_miss_lookup(key, compile);
   if (!result.is_empty()) {
-    if (UseInliningDatabaseEagerly && result.is_method() && InliningDatabase::lookup(key) != NULL) {
+	if (UseInliningDatabaseEagerly && result.is_method() && InliningDatabase::lookup(key)) {
       // don't update the cache during inliningDB compiles if the result is a methodOop
       // contained in the inlining DB -- otherwise method won't be compiled eagerly
       assert(theCompiler, "should only happen during compilation");   // otherwise ic lookup is broken

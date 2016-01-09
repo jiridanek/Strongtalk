@@ -606,7 +606,7 @@ int PIC::code_for_megamorphic_case(char* entry) {
 }
 
 
-void PIC::shrink_and_generate(PIC* pic, klassOop klass, void* method) {
+void PIC::shrink_and_generate(PIC* /*pic*/, klassOop /*klass*/, void* /*method*/) {
   Unimplemented();
 }
 

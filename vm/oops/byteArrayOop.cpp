@@ -224,7 +224,7 @@ bool byteArrayOopDesc::is_unary() const {
 bool byteArrayOopDesc::is_binary() const {
   u_char first = byte_at(1);
   // special case _, as compiler treats as a letter
-  return first != '_' && ispunct(first) ? true : false;
+  return first != '_' && ispunct(first);
 }
 
 bool byteArrayOopDesc::is_keyword() const {

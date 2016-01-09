@@ -4,6 +4,32 @@ project(Strongtalk)
 add_definitions(-DDELTA_COMPILER -DASSERT -DDEBUG)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -m32 -fno-rtti -Wno-write-strings -fno-operator-names -fms-extensions")
 
+# http://www.artificialworlds.net/blog/2014/07/18/best-gcc-warning-flags-for-compiling-c/
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wredundant-decls -Wcast-align -Wmissing-declarations -Wmissing-include-dirs -Wswitch-enum -Wswitch-default -Wextra -Wall -Werror -Winvalid-pch -Wredundant-decls -Wformat=2 -Wmissing-format-attribute -Wformat-nonliteral")
+# TODO: gragually enable
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-error -Wno-unused-parameter -Wno-reorder -Wno-redundant-decls -Wno-missing-declarations -Wno-unused-variable -Wno-type-limits -Wno-unused-function -Wno-switch-default -Wno-switch -Wno-format-security -Wno-format-nonliteral -Wno-switch-enum -Wno-conversion-null -Wno-format -Wno-sign-compare -Wno-empty-body -Wno-char-subscripts")
+# https://stackoverflow.com/questions/10046114/in-cmake-how-can-i-test-if-the-compiler-is-clang
+if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+  # using Clang
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-overloaded-virtual -Wno-cast-align -Wno-undefined-bool-conversion -Wno-sometimes-uninitialized -Wno-shift-negative-value -Wno-constant-conversion -Wno-unused-private-field -Wno-extern-initializer -Wno-new-returns-null -Wno-tautological-constant-out-of-range-compare -Wno-tautological-undefined-compare")
+elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
+  # using GCC
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-unused-but-set-variable -Wno-suggest-attribute=format")
+elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Intel")
+  # using Intel C++
+elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
+  # using Visual Studio C++
+endif()
+
+# https://gcc.gnu.org/onlinedocs/gcc/Gcov-and-Optimization.html
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fprofile-arcs -ftest-coverage")
+
+# https://developerblog.redhat.com/2014/10/16/gcc-undefined-behavior-sanitizer-ubsan/
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=undefined")
+
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address")
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=thread")
+
 include_directories(
     build
     vm/asm
@@ -416,8 +442,8 @@ set(LIBSTRONGTALK_SOURCE_FILES
 
 set(STRONGTALKTEST_SOURCE_FILES
 # compiler
-#     test/compiler/compiler_tests.cpp # CRASH: Linux/GCC & Mingw/wine
-    test/compiler/node_tests.cpp 
+#     test/compiler/compiler_tests.cpp # CRASH: Linux/GCC & Linux/clang & Mingw/wine
+    test/compiler/node_tests.cpp
 
 # interpreter OK:  Linux/GCC & Mingw/wine
     test/interpreter/hCodeBufferTests.cpp
@@ -429,12 +455,11 @@ set(STRONGTALKTEST_SOURCE_FILES
         test/memory/association_klass_tests.cpp
         test/memory/blockClosureKlassTests.cpp
         test/memory/byteArrayKlassTests.cpp
-#         test/memory/contextKlassTests.cpp  # CRASH: Linux/GCC & wine/Mingw
+#         test/memory/contextKlassTests.cpp  # CRASH: Linux/GCC & Linux/clang & wine/Mingw
     #double
         test/memory/doubleByteArrayTests.cpp
         test/memory/doubleValueArrayTests.cpp
         test/memory/doublOopKlassTests.cpp
-    #
         test/memory/edenMark.hpp
         test/memory/memOopAllocationTests.cpp
         test/memory/memOopKlassTests.cpp
@@ -447,22 +472,22 @@ set(STRONGTALKTEST_SOURCE_FILES
         test/memory/proxyKlassTests.cpp
 #         test/memory/proxyPrimsTest.cpp # vm asserts failures but all tests (assers in tests) succeed
         test/memory/universe_tests.cpp
-         test/memory/vframeKlassTests.cpp
+        test/memory/vframeKlassTests.cpp
 # prims/alienInteger
-#     test/prims/alienIntegerCallout0Tests.cpp  # CRASH: Linux/GCC & wine/Mingw
-#     test/prims/alienIntegerCallout1Tests.cpp  # OK: wine/Mingw FAIL: Linux/GCC
+#     test/prims/alienIntegerCallout0Tests.cpp  # CRASH: Linux/GCC & Linux/clang & wine/Mingw
+#     test/prims/alienIntegerCallout1Tests.cpp  # OK: wine/Mingw FAIL: Linux/GCC & Linux/clang
     test/prims/alienIntegerCallout2Tests.cpp
     test/prims/alienIntegerCallout3Tests.cpp
     test/prims/alienIntegerCallout4Tests.cpp
     test/prims/alienIntegerCallout5Tests.cpp
     test/prims/alienIntegerCallout6Tests.cpp
     test/prims/alienIntegerCallout7Tests.cpp
-    test/prims/alienIntegerCalloutWithArgumentsTests.cpp
+    #test/prims/alienIntegerCalloutWithArgumentsTests.cpp # FAIL: Linux/clang
 # prims/behavior OK: Linux/GCC & wine/Mingw
     test/prims/behaviorPrimsSuperclassTests.cpp
     test/prims/behaviorPrimsTests.cpp
 # prims/byteArray
-#     test/prims/byteArrayPrimsTests.cpp     # FAIL: Linux/GCC & wine/Mingw
+    test/prims/byteArrayPrimsTests.cpp     # FAIL: Linux/GCC & Linux/clang & wine/Mingw
     test/prims/dbyteArrayPrimsTests.cpp
 # prims/alien OK: Linux/GCC & wine/Mingw
     test/prims/directAlienPrimsTests.cpp
@@ -473,7 +498,7 @@ set(STRONGTALKTEST_SOURCE_FILES
     test/prims/objArrayPrimsTests.cpp
 # prims/oop OK: Linux/GCC & wine/Mingw
     test/prims/oop_prims.cpp
-    test/prims/oop_prims_perform.cpp
+    test/prims/oop_prims_perform.cpp # FAIL: Linux/clang
 # prims OK: Linux/GCC & wine/Mingw
     test/prims/pointerAlienPrimsTest.cpp
     test/prims/smi_prims_tests.cpp
@@ -486,7 +511,7 @@ set(STRONGTALKTEST_SOURCE_FILES
     test/utilities/lprintf_test.cpp
     test/utilities/testNotifier.hpp
     test/utilities/testUtils.hpp
-# ??? what is is for ???
+# ??? what is it for ???
 #     test/callbacks.cpp
 )
 

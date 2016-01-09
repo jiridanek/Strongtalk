@@ -164,7 +164,7 @@ char* CompiledIC::normalLookup(oop recv) {
     // return a substitute nmethod so that stub routine doesn't crash
     return (char*)nmethod_substitute;
   
-    /* Old code - keep around till completely fixed
+	/* TODO: Old code - keep around till completely fixed
 
     LookupKey key(klass, sel);
 
@@ -451,7 +451,7 @@ void CompiledIC::cleanup() {
         assert(result.is_entry(), "lookup result should be a jump table entry");
         set_call_destination(result.get_nmethod()->entryPoint());
       }
-      /* Old code for compiled target - remove if new version works (gri 7/17/96)
+      /* TODO: Old code for compiled target - remove if new version works (gri 7/17/96)
 
       nmethod* nm = findNMethod(destination());
       LookupResult result = lookupCache::lookup(&nm->key);
@@ -479,7 +479,7 @@ void CompiledIC::cleanup() {
       if (p != NULL) {
         // still polymorphic
         set_call_destination(result->entry());
-      } else {
+      } else { // TODO(jirka): else branch is unreachable
         if (nm) {
           // monomorphic
           set_call_destination(nm->entryPoint());

@@ -217,7 +217,7 @@ bool ChunkKlass::isValid() {
     u_char* e = next()->asByte() - 1;
     int ovfl = isUsed() ? usedOvfl: unusedOvfl;
     ok = p[0] == e[0] &&
-        (p[0] != ovfl || p[1] == e[-3] && p[2] == e[-2] && p[3] == e[-1]);
+        (p[0] != ovfl || (p[1] == e[-3] && p[2] == e[-2] && p[3] == e[-1]));
   }
   return ok;
 }

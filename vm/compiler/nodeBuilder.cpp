@@ -295,8 +295,8 @@ void NodeBuilder::cond_node(CondNode* node) {
     // constant condition
     oop c = cond->asConstantExpr()->constant();
     if (c == trueObj || c == falseObj) {
-      if (node->is_and() && c == trueObj ||
-        node->is_or()  && c == falseObj) {
+      if ((node->is_and() && c == trueObj) ||
+                (node->is_or()  && c == falseObj)) {
           generate_subinterval(node->expr_code(), true);
           // result of and:/or: is result of 2nd expression
           Expr* res = exprStack()->top();

@@ -28,8 +28,6 @@ OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISE
 static const int   maxD = 36;
 static const int   logB = sizeof(Digit)*8;
 static const Digit hlfB = 0x80000000;
-static const Digit oneB = 0xFFFFFFFF;
-static const int   digitBitLength = sizeof(Digit) * 8;
 
 // double layout
 //
@@ -270,38 +268,6 @@ inline char IntegerOps::as_char(int i) {
   return "0123456789abcdefghijklmnopqrstuvwxyz"[i];
 }
 
-inline Digit IntegerOps::xpy(Digit x, Digit y, Digit& carry) {
-  // returns (x + y + c) mod B; sets carry = (x + y + c) div B
-
-  DoubleDigit lx = x;
-  DoubleDigit r = lx + y + carry;
-  carry = r >> digitBitLength;
-  return (Digit)(r  & oneB);
-}
-
-inline Digit IntegerOps::xmy(Digit x, Digit y, Digit& carry) {
-  // returns (x - y - c) mod B; sets carry = -((x - y - c) div B)
-  DoubleDigit lx = x;
-  DoubleDigit r = lx - y - carry;
-  carry = r >> digitBitLength & 1;
-  return Digit(r  & oneB);
-}
-
-inline Digit IntegerOps::axpy(Digit a, Digit x, Digit y, Digit& carry) {
-  // returns (a*x + y + c) mod B; sets carry = (a*x + y + c) div B
-  DoubleDigit lx = x;
-  DoubleDigit r = (lx * a) + y + carry;
-  carry = r >> digitBitLength;
-  return Digit(r  & oneB);
-}
-
-inline Digit IntegerOps::xdy(Digit x, Digit y, Digit& carry) {
-  // returns (carry*B + x) div y; sets carry = (carry*B + x) mod y
-  DoubleDigit c = carry;	// make sure that carry is used below and not &carry
-  DoubleDigit total = ((c << digitBitLength) + x);
-  carry = total % y;
-  return Digit((total / y) & oneB);
-}
 
 Digit IntegerOps::power(Digit x, int n) {
   Digit f = x;
@@ -323,7 +289,7 @@ Digit IntegerOps::max_power(Digit x) {
   Digit n = 1;
   Digit p = x;
   Digit c = 0;
-  while (c == 0) {
+  while (c == 0) { //TODO(jirka): this looks wrong
     // x^n = c*B + p
     p = axpy(x, p, 0, c);
     n++;

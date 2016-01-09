@@ -197,7 +197,7 @@ class DeltaProcess: public Process {
   static bool stepping;
   // constructor
   DeltaProcess(oop receiver, symbolOop selector, bool createThread = true);
-  ~DeltaProcess();
+  virtual ~DeltaProcess();
 
   void setIsCallback(bool isCallback) {
     _isCallback = isCallback;

@@ -38,12 +38,12 @@ class NameDesc: public PrintableResourceObj {
 
   virtual bool hasLocation() const 	{ return false; }
   virtual Location location() const	{ SubclassResponsibility(); return unAllocated; }
-  virtual oop value(const frame* f = NULL) const { SubclassResponsibility(); return NULL; } 
+  virtual oop value(const frame* /*f*/ = NULL) const { SubclassResponsibility(); return NULL; }
   
   virtual bool verify()			{ return true; }
   virtual void print()			= 0;
 
-  virtual bool equal(NameDesc* other) const { return false; }
+  virtual bool equal(NameDesc* /*other*/) const { return false; }
 
   int offset;
 };
@@ -75,7 +75,7 @@ struct ValueNameDesc: public NameDesc {
   
   bool isValue() const { return true; }
   
-  oop value(const frame* f = NULL) const { return _v; }
+  oop value(const frame* /*f*/ = NULL) const { return _v; }
 
   bool equal(NameDesc* other) const; 
 

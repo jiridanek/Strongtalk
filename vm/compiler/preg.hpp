@@ -196,7 +196,7 @@ class TempPReg : public PReg {
   TempPReg(InlinedScope* s) : PReg(s) {}
   TempPReg(InlinedScope* s, Location l, bool incU, bool incD): PReg(s, l, incU, incD) {}
   bool isTempPReg() const 	    	{ return true; }
-  bool isLiveAt(Node* n) const 		{ Unused(n);  return false; }
+  bool isLiveAt(Node* /*n*/) const 		{ return false; }
   bool canCopyPropagate() const 	{ return false; }
   char* prefix() const			{ return "TempP"; }
 };
@@ -309,6 +309,7 @@ class ConstPReg : public PReg {
   void allocateTo(Location r);
   void extendLiveRange(InlinedScope* s);
   bool extendLiveRange(Node* n);
+    /// does receiver cover node n (is it live at n)?
   bool covers(Node* n) const;
   bool needsRegister() const;
   NameNode* nameNode(bool mustBeLegal = true) const;

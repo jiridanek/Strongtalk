@@ -46,25 +46,21 @@ void CHeapObj::operator delete(void* p) {
   FreeHeap(p);
 }
 
-void* StackObj::operator new(size_t size) {
-  Unused(size);
+void* StackObj::operator new(size_t /*size*/) throw() {
   ShouldNotCallThis();
   return 0;
 };
 
-void StackObj::operator delete(void* p) {
-  Unused(p);
+void StackObj::operator delete(void* /*p*/) {
   ShouldNotCallThis();
 };
 
-void* ValueObj::operator new(size_t size) {
-  Unused(size);
+void* ValueObj::operator new(size_t /*size*/) throw() {
   ShouldNotCallThis();
   return 0;
 };
 
-void ValueObj::operator delete(void* p) {
-  Unused(p);
+void ValueObj::operator delete(void* /*p*/) {
   ShouldNotCallThis();
 };
 

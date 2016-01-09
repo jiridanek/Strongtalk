@@ -30,7 +30,7 @@ class Register: public ValueObj {
  public:
   // creation
   Register(void): _number(-1)			{}
-  Register(int number, char f): _number(number)	{}	// f is only to make sure that
+  Register(int number, char /*f*/): _number(number)	{}	// f is only to make sure that
   							// an int is not accidentially
 							// converted into a Register...
 

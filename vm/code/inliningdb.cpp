@@ -703,8 +703,9 @@ void InliningDatabase::add_lookup_entry(LookupKey* outer, LookupKey* inner) {
   }
 }
 
+//TODO(jirka): should rename to make the booleaness more obvious
 bool InliningDatabase::lookup(LookupKey* outer, LookupKey* inner) {
-  if (table_no == 0) return NULL;  // Skim the cream
+  if (table_no == 0) return false;  // Skim the cream
 
   unsigned int index = index_for(outer, inner);
   if (!table[index].is_filled()) return false; 
@@ -767,5 +768,5 @@ bool InliningDatabase::file_out_all() {
   // Flush the lookup table
   reset_lookup_table();
 
-  return local_number_of_nmethods_written ? true : false;
+  return local_number_of_nmethods_written != 0;
 }

@@ -172,7 +172,7 @@ symbolOop Klass::inst_var_name_at(int offset) const {
       current_offset--;
       if (offset == current_offset) return m->instVar_at(index);
     } 
-  } while(current_klass = (current_klass->superKlass() == nilObj ? NULL : current_klass->superKlass()->klass_part()));
+  } while((current_klass = (current_klass->superKlass() == nilObj ? NULL : current_klass->superKlass()->klass_part())));
   return NULL;
 }
 

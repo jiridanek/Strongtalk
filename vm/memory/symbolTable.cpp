@@ -57,7 +57,7 @@ int hash(char* name, int len) {
   char* end = s + len;
   for (; s < end; s = s + increment) {
     h = (h << 4) + (long unsigned) *s;
-    if (g = h & 0xf0000000) h ^= g | (g >> 24);
+    if ((g = h & 0xf0000000)) h ^= g | (g >> 24);
   }
   return h;
 }

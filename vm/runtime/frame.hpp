@@ -85,8 +85,8 @@ class frame : ValueObj {
   void patch_pc(char* pc); // patch the return address of the frame below.
   void patch_fp(int*  fp); // patch the link of the frame below.
 
-  int*   addr_at(int index) const 	{ return &fp()[index];    } // should return void**
-  int    at(int index) const      	{ return *addr_at(index); } // should really return void*
+  void**   addr_at(int index) const { return (void **)fp() + index;    } // TODO(Steve Rees): should return void**
+  void*    at(int index) const      { return *addr_at(index); } // TODO(jirka): changed to void*; still thinking about it
 
  private:
   int**  link_addr() const        	{ return (int**) addr_at(frame_link_offset); }

@@ -691,9 +691,9 @@ void PrologueNode::gen() {
     if (scope()->method()->block_info() == methodOopDesc::expects_context) {
       const bool use_fast_check = false;			// turn this off if it doesn't work
       if (use_fast_check) {
-        // What happens if the context chain is not anchored in a method?
-	// Probably doesn't work correctly - think about this - gri 6/26/96
-	// Turned off for now - because of problems. Should fix this.
+        // TODO: What happens if the context chain is not anchored in a method?
+	// TODO: Probably doesn't work correctly - think about this - gri 6/26/96
+	// FIXME: Turned off for now - because of problems. Should fix this.
         int length = _scope->homeContext() + 1;			// includes context created within this scope
         if (scope()->allocatesCompiledContext()) length--;	// context has not been created yet -> adjust length
         verify_context_chain(recv, length, temp2, temp3);

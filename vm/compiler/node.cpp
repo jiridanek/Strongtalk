@@ -929,7 +929,7 @@ void	UncommonSendNode::verify() const {
 bool PrimNode::canBeEliminated() const {
   if (!Node::canBeEliminated()) return false;
   if (_pdesc->can_be_constant_folded() && !canFail()) return true;
-  // temporary hack -- fix this
+  // FIXME: temporary hack -- fix this
   // should test arg types to make sure prim won't fail
   // for now, treat cloning etc. special
   if (_pdesc->can_be_constant_folded()) return true;	// not safe!
@@ -1038,16 +1038,16 @@ Node* BasicNode::copy(PReg* from, PReg* to) const {
   return c;
 }
 
-# define SHOULD_NOT_CLONE  	{ Unused(from); Unused(to); ShouldNotCallThis(); return NULL; }
+# define SHOULD_NOT_CLONE  	{ ShouldNotCallThis(); return NULL; }
 # define TRANSLATE(s) 		((s == from) ? to : s)
 
-Node* PrologueNode::clone	(PReg* from, PReg* to) const { SHOULD_NOT_CLONE }
-Node* NLRSetupNode::clone	(PReg* from, PReg* to) const { SHOULD_NOT_CLONE }
-Node* NLRContinuationNode::clone(PReg* from, PReg* to) const { SHOULD_NOT_CLONE }
-Node* ReturnNode::clone		(PReg* from, PReg* to) const { SHOULD_NOT_CLONE }
-Node* BranchNode::clone		(PReg* from, PReg* to) const { SHOULD_NOT_CLONE }
-Node* TypeTestNode::clone	(PReg* from, PReg* to) const { SHOULD_NOT_CLONE }
-Node* FixedCodeNode::clone	(PReg* from, PReg* to) const { SHOULD_NOT_CLONE }
+Node* PrologueNode::clone	(PReg* /*from*/, PReg* /*to*/) const { SHOULD_NOT_CLONE }
+Node* NLRSetupNode::clone	(PReg* /*from*/, PReg* /*to*/) const { SHOULD_NOT_CLONE }
+Node* NLRContinuationNode::clone(PReg* /*from*/, PReg* /*to*/) const { SHOULD_NOT_CLONE }
+Node* ReturnNode::clone		(PReg* /*from*/, PReg* /*to*/) const { SHOULD_NOT_CLONE }
+Node* BranchNode::clone		(PReg* /*from*/, PReg* /*to*/) const { SHOULD_NOT_CLONE }
+Node* TypeTestNode::clone	(PReg* /*from*/, PReg* /*to*/) const { SHOULD_NOT_CLONE }
+Node* FixedCodeNode::clone	(PReg* /*from*/, PReg* /*to*/) const { SHOULD_NOT_CLONE }
 
 Node* LoadOffsetNode::clone(PReg* from, PReg* to) const {
   return NodeFactory::new_LoadOffsetNode(TRANSLATE(_dest), _src, offset, isArraySize);
@@ -1077,8 +1077,7 @@ Node* ArithRCNode::clone(PReg* from, PReg* to) const {
   return NodeFactory::new_ArithRCNode(TRANSLATE(_dest), TRANSLATE(_src), _op, _oper);
 }
 
-Node* SendNode::clone(PReg* from, PReg* to) const {
-  Unused(from); Unused(to);
+Node* SendNode::clone(PReg* /*from*/, PReg* /*to*/) const {
   // NB: use current split signature, not the receiver's sig!
   SendNode* n = NodeFactory::new_SendNode(_key, nlrTestPoint(), args, exprStack, _superSend, _info);
   n->_dest = _dest;	    // don't give it a new dest!
@@ -1102,8 +1101,7 @@ Node* DLLNode::clone(PReg* from, PReg* to) const {
 }
 
 
-Node* InterruptCheckNode::clone(PReg* from, PReg* to) const {
-  Unused(from); Unused(to);
+Node* InterruptCheckNode::clone(PReg* from, PReg* /*to*/) const {
   // NB: use scope's current sig, not the receiver's sig!
   InterruptCheckNode* n = NodeFactory::new_InterruptCheckNode(exprStack);
   assert(_dest != from, "shouldn't change dest");
@@ -1167,8 +1165,7 @@ Node* ArrayAtPutNode::clone(PReg* from, PReg* to) const {
 }
 
 
-Node* UncommonNode::clone(PReg* from, PReg* to) const {
-  Unused(from); Unused(to);
+Node* UncommonNode::clone(PReg* /*from*/, PReg* /*to*/) const {
   return NodeFactory::new_UncommonNode(exprStack, _bci);
 }
 
@@ -1178,11 +1175,11 @@ Node* InlinedReturnNode::clone	(PReg* from, PReg* to) const {
 }
 
 
-# define NO_NEED_TO_COPY	{ Unused(from); Unused(to); return NULL; }
+# define NO_NEED_TO_COPY	{ return NULL; }
 
-Node* MergeNode::clone		(PReg* from, PReg* to) const { NO_NEED_TO_COPY }
-Node* NopNode::clone		(PReg* from, PReg* to) const { NO_NEED_TO_COPY }
-Node* CommentNode::clone	(PReg* from, PReg* to) const { NO_NEED_TO_COPY }
+Node* MergeNode::clone		(PReg* /*from*/, PReg* /*to*/) const { NO_NEED_TO_COPY }
+Node* NopNode::clone		(PReg* /*from*/, PReg* /*to*/) const { NO_NEED_TO_COPY }
+Node* CommentNode::clone	(PReg* /*from*/, PReg* /*to*/) const { NO_NEED_TO_COPY }
 
 
 // ==================================================================================
@@ -1705,9 +1702,8 @@ void PrimNode::eliminate(BB* bb, PReg* r, bool rem, bool cp) {
   }
 }
 
-void TypeTestNode::eliminate(BB* bb, PReg* rr, bool rem, bool cp) {
+void TypeTestNode::eliminate(BB* bb, PReg* rr, bool /*rem*/, bool /*cp*/) {
   // completely eliminate receiver and all successors
-  Unused(rem); Unused(cp);
   if (deleted) return;
 
   eliminate(bb, rr, (ConstPReg*)NULL, (klassOop)badOop);
@@ -1772,7 +1768,6 @@ void TypeTestNode::eliminateUnnecessary(klassOop m) {
 }
 
 void AbstractArrayAtNode::eliminate(BB* bb, PReg* r, bool rem, bool cp) {
-  Unused(cp); Unused(rem);
   assert(rem, "shouldn't eliminate because of side effects (errors)");
   if (deleted) return;
   // remove fail branch nodes first
@@ -2257,8 +2252,7 @@ bool ContextInitNode::copyPropagate(BB* bb, Use* u, PReg* d, bool replace) {
 # define U_CHECK(r) if (r->loc.isRegisterLocation()) use_count[r->loc.number()]++
 # define D_CHECK(r) if (r->loc.isRegisterLocation()) def_count[r->loc.number()]++
 
-void LoadNode::markAllocated(int* use_count, int* def_count) {
-  Unused(use_count);
+void LoadNode::markAllocated(int* /*use_count*/, int* def_count) {
   D_CHECK(_dest);
 }
 void LoadOffsetNode::markAllocated(int* use_count, int* def_count) {
@@ -2268,8 +2262,7 @@ void LoadUplevelNode::markAllocated(int* use_count, int* def_count) {
   U_CHECK(_context0); LoadNode::markAllocated(use_count, def_count);
 }
 
-void StoreNode::markAllocated(int* use_count, int* def_count) {
-  Unused(def_count);
+void StoreNode::markAllocated(int* use_count, int* /*def_count*/) {
   U_CHECK(_src);
 }
 void StoreOffsetNode::markAllocated(int* use_count, int* def_count) {
@@ -2338,8 +2331,7 @@ void ContextZapNode::markAllocated(int* use_count, int* def_count) {
   U_CHECK(_src);
 }
 
-void TypeTestNode::markAllocated(int* use_count, int* def_count) {
-  Unused(def_count);
+void TypeTestNode::markAllocated(int* use_count, int* /*def_count*/) {
   U_CHECK(_src);
 }
 
@@ -3195,8 +3187,8 @@ void ContextInitNode::verify() const {
   int n = nofTemps();
   if ((n != contents()->length()) ||
     (n != _initializers->length()) ||
-    (_contentDefs != NULL) && (n != _contentDefs->length()) ||
-    (_initializerUses != NULL) && (n != _initializerUses->length())) {
+            ((_contentDefs != NULL) && (n != _contentDefs->length())) ||
+            ((_initializerUses != NULL) && (n != _initializerUses->length()))) {
       error("ContextInitNode %#lx: bad nofTemps %d", this, n);
   }
   int i = nofTemps();

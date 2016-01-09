@@ -36,7 +36,7 @@ class PeriodicTask: public CHeapObj {
   friend void real_time_tick(int delay_time);
  public:
   PeriodicTask(int interval_time); // interval is in milliseconds of elapsed time
-  ~PeriodicTask();
+  virtual ~PeriodicTask();
 
   bool is_enrolled() const;
   void enroll();

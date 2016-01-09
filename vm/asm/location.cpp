@@ -117,7 +117,7 @@ void IntFreeList::grow() {
   _first = _list->length() - 1;
 }
 
-IntFreeList::IntFreeList(int size) {
+IntFreeList::IntFreeList(int /*size*/) {
   _first = -1;
   _list = new GrowableArray<int>(2);
   assert(_list->length() == 0, "should be zero");

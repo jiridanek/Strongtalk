@@ -107,7 +107,7 @@ class os {
 
   static void breakpoint();
 
-  static int message_box(char* title, char* message);
+  static int message_box(const char* title, const char* message);
 
   static void     fatalExit(int num);
 

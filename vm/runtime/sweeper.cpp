@@ -43,8 +43,7 @@ void Sweeper::print_all() {
 bool Sweeper::register_active_frame(frame fr) {
   if (fr.is_interpreted_frame()) {
     _active_method = fr.method();
-    if (_active_method == NULL) return NULL;
-    return true;
+    return _active_method != NULL;
   } else if (fr.is_compiled_frame()) {
     _active_nmethod = findNMethod(fr.pc());
     return true;

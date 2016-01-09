@@ -37,8 +37,7 @@ void OopNCode::relocate() {
 }
 
 bool OopNCode::switch_pointers(oop from, oop to,
-			       GrowableArray<nmethod*>* nmethods_to_invalidate) {
-  Unused(nmethods_to_invalidate);
+				   GrowableArray<nmethod*>* /*nmethods_to_invalidate*/) {
   bool needToInvalICache = false;
   Unimplemented();
   return needToInvalICache;
@@ -54,7 +53,7 @@ void NCodeBase::verify2(const char* name) {
 void OopNCode::verify() {
   const char* name = isNMethod() ? "nmethod" : (isPIC() ? " PIC" : "count stub");
   NCodeBase::verify2(name);
-  // %fix: Verify via relocIterator
+  // %fixme: Verify via relocIterator
 }
 
 NCodeBase* findThing(void* addr) {

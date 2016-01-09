@@ -55,8 +55,7 @@ nmethod* new_nmethod(Compiler* c) {
 }
 
 
-void* nmethod::operator new(size_t size) {
-  Unused(size);
+void* nmethod::operator new(size_t /*size*/) {
   assert(sizeof(nmethod) % oopSize == 0, "nmethod size must be multiple of a word");
   int nmethod_size = sizeof(nmethod) 
                    + instruction_length
@@ -75,7 +74,7 @@ void nmethod::initForTesting(int size, LookupKey* key) {
   _scopeLen = 0;
   _number_of_noninlined_blocks = 0;
   main_id = Universe::code->jump_table()->allocate(1);
-  promoted_id = NULL;
+  promoted_id = NULL; //TODO(jirka): I deleted this line once. Why?
 
   _invocation_count		= 0;
   _uncommon_trap_counter	= 0;

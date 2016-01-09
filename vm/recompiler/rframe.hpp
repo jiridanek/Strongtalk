@@ -74,7 +74,7 @@ class RFrame : public PrintableResourceObj {
   RFrame* caller();
   RFrame* callee() const		{ return _callee; }
   RFrame* parent() const;		// rframe containing lexical scope (if any)
-  void print()				= 0;
+  virtual void print()				= 0;
 
   static int computeSends(methodOop m);
   static int computeSends(nmethod* nm);

@@ -89,7 +89,7 @@ class defaultPrettyPrintStream : public prettyPrintStream {
 
   int width()               { return 100;           }
   int remaining()           { return width() - pos; }
-  int width_of_char(char c) { return 1;             }
+  int width_of_char(char /*c*/) { return 1;             }
   int width_of_space()      { return 1;             }
   int infinity()            { return width();       }
 };

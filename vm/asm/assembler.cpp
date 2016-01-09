@@ -498,22 +498,22 @@ void Assembler::movsxw(Register dst, Register src) {
 }
 
 
-void Assembler::cmovccl(Condition cc, Register dst, int imm32) {
+void Assembler::cmovccl(Condition /*cc*/, Register /*dst*/, int /*imm32*/) {
   Unimplemented();
 }
 
 
-void Assembler::cmovccl(Condition cc, Register dst, oop obj) {
+void Assembler::cmovccl(Condition /*cc*/, Register /*dst*/, oop /*obj*/) {
   Unimplemented();
 }
 
 
-void Assembler::cmovccl(Condition cc, Register dst, Register src) {
+void Assembler::cmovccl(Condition /*cc*/, Register /*dst*/, Register /*src*/) {
   Unimplemented();
 }
 
 
-void Assembler::cmovccl(Condition cc, Register dst, Address src) {
+void Assembler::cmovccl(Condition /*cc*/, Register /*dst*/, Address /*src*/) {
   Unimplemented();
 }
 
@@ -725,7 +725,7 @@ void Assembler::sarl(Register dst) {
 }
 
 
-void Assembler::sbbl(Register dst, int imm32) {
+void Assembler::sbbl(Register /*dst*/, int /*imm32*/) {
   Unimplemented();
 }
 
@@ -1000,7 +1000,7 @@ void Assembler::bind(Label& L) {
 }
 
 
-void Assembler::merge(Label& L, Label& with) {
+void Assembler::merge(Label& /*L*/, Label& /*with*/) {
   Unimplemented();
 }
 
@@ -1436,6 +1436,7 @@ void MacroAssembler::call_C(Register entry, Label& nlrTestPoint) {
 }
 
 
+/*
 // The following 3 macros implement C run-time calls with arguments. When setting up the
 // last Delta frame, the value pushed after last_Delta_sp MUST be a valid return address,
 // therefore an additional call to a little stub is required which does the parameter
@@ -1451,10 +1452,10 @@ void MacroAssembler::call_C(Register entry, Label& nlrTestPoint) {
 // [...        ]                                     |
 // [previous fp] <--- last_Delta_fp                 /
 //
-// Note: The routines could be implemented slightly more efficient and shorter by
+// TODO: The routines could be implemented slightly more efficient and shorter by
 // explicitly pushing/popping a valid return address instead of calling the extra
 // stub. However, currently the assembler doesn't support label pushes.
-
+*/
 
 void MacroAssembler::call_C(char* entry, Register arg1) {
   Label L1, L2;

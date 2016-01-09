@@ -468,7 +468,7 @@ Expr* PrimInliner::generate_cond(BranchOpCode cond, NodeBuilder* gen, PReg* resP
 //       when compiling whileTrue loops - gri 6/26/96
 
   // n2: conditional branch
-  BranchNode* n2 = NodeFactory::new_BranchNode(not(cond));
+  BranchNode* n2 = NodeFactory::new_BranchNode(not(cond)); // TODO(jirka): this makes enum from int
   gen->append(n2);
 
   // tAsgn: true branch

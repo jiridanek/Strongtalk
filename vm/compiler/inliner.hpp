@@ -32,18 +32,18 @@ enum SendKind { NormalSend, SelfSend, SuperSend };
 class Inliner: public PrintableResourceObj {
   void reportInline(char* prefix); // Add a comment node delimiting an inlined send
  protected:
-  InlinedScope* sender;		// scope containing the send
+  InlinedScope* sender;		///< scope containing the send
   SendKind kind;
-  InlinedScope* callee;		// scope being inlined (or NULL)
-  SendInfo* _info;		// send being inlined
-  Expr* res;			// result expression
-  SAPReg* resultPR;		// result PReg
-  NodeBuilder* gen;		// current generator (sender's or callee's)
-  MergeNode* merge;		// where multiple versions merge (NULL if only one)
-  char* _msg;			// reason for not inlining the send
-  bool lastLookupFailed;	// last tryLookup failed because no method found
+  InlinedScope* callee;		///< scope being inlined (or NULL)
+  SendInfo* _info;		///< send being inlined
+  Expr* res;			///< result expression
+  SAPReg* resultPR;		///< result PReg
+  NodeBuilder* gen;		///< current generator (sender's or callee's)
+  MergeNode* merge;		///< where multiple versions merge (NULL if only one)
+  const char* _msg;			///< reason for not inlining the send
+  bool lastLookupFailed;	///< last tryLookup failed because no method found
  public:
-  int depth;			// nesting depth (for debug output)
+  int depth;			///< nesting depth (for debug output)
   
   Inliner(InlinedScope* s) 	{ this->sender = s; initialize(); }
 
@@ -56,7 +56,7 @@ class Inliner: public PrintableResourceObj {
   Expr* inlineBlockInvocation	(SendInfo* info);
 
   SendInfo* info() const	{ return _info; }
-  char* msg() const		{ return _msg; }
+  const char* msg() const		{ return _msg; }
   void print();
 
  protected:
@@ -71,7 +71,7 @@ class Inliner: public PrintableResourceObj {
   Expr* genRealSend();
   InlinedScope* tryLookup(Expr* rcvr);	  // try lookup and determine if should inline send
   Expr* doInline(Node* start);
-  char* checkSendInPrimFailure();
+  const char* checkSendInPrimFailure();
   InlinedScope* notify(const char* msg);
   RScope* makeBlockRScope(const Expr* rcvr, LookupKey* key, const methodOop method);
   InlinedScope* makeScope(const Expr* rcvr, const klassOop klass, const LookupKey* key, const methodOop method);

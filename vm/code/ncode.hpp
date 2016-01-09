@@ -32,8 +32,7 @@ class NCodeBase : public PrintableCHeapObj {
  protected:
   int _instsLen;			// instruction length in bytes
  public:
-  void* operator new(size_t size) {
-    Unused(size); SubclassResponsibility(); return NULL; }
+  void* operator new(size_t /*size*/) { SubclassResponsibility(); return NULL; }
   
   virtual char* insts() const = 0;	// beginning of instructions part
   virtual int size() const = 0;		// size in bytes

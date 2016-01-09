@@ -72,7 +72,7 @@ class PrintableCHeapObj : public CHeapObj {
 // Calling new or delete will result in fatal error.
 class StackObj {
  public:
-  void* operator new(size_t size);
+  void* operator new(size_t size) throw();
   void  operator delete(void* p);
 };
 
@@ -88,7 +88,7 @@ class PrintableStackObj : StackObj {
 // Calling new or delete will result in fatal error.
 class ValueObj {
  public:
-  void* operator new(size_t size);
+  void* operator new(size_t size) throw();
   void operator delete(void* p);
 };
 
@@ -162,9 +162,9 @@ public:
   int used()     { return first_free - bottom; }
   
   bool contains(void* p) {
-    if (p >= (void*) bottom && p < (void*) top) return true;
-    else if (prev) return prev->contains(p);
-    else return false; }
+      if (p >= (void *) bottom && p < (void *) top) return true;
+      return (prev) ? prev->contains(p) : false;
+  }
 
   void print();
   void print_short();
@@ -289,7 +289,7 @@ class ResourceObj {
     return on_C_heap ? (char*) malloc(size) : allocateResource(size);
   }
 
-  void  operator delete(void* p, int) {} // use explicit free() to deallocate heap-allocated objects
+  void  operator delete(void* /*p*/, int) {} // use explicit free() to deallocate heap-allocated objects
 };
 
 // Base class for objects allocated in the resource area

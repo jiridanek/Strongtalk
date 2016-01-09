@@ -318,6 +318,7 @@ void prim_init() {
     if (prev) {
       guarantee(strcmp(prev->name(), e->name()) == -1, "primitive table not sorted");
     }
+    //prev = e; //TODO(jirka): added this line and guarantee failed; doublecheck that this is the right thing to do
   }
   primitives::clear_counters();
 }

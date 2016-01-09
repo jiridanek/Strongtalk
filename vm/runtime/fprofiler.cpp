@@ -107,7 +107,7 @@ class pnode : public CHeapObj {
     _next = NULL;
   }
 
-  ~pnode() {
+  virtual ~pnode() {
     if (_next)
       delete _next;
   }

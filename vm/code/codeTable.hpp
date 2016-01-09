@@ -26,8 +26,7 @@ OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISE
 // The code table is used to find nmethods in the zone.
 // It is a hash table, where each bucket contains a list of nmethods.
 
-//%note
-// Should implement free list like symbolTable (Lars 2/10-95)
+//TODO: %note Should implement free list like symbolTable (Lars 2/10-95)
 
 const int codeTableSize  = 2048;
 const int debugTableSize = 256;

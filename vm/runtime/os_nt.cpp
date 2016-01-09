@@ -551,7 +551,7 @@ void os::initialize_system_info() {
   initialze_performance_counter();
 }
 
-int os::message_box(char* title, char* message) {
+int os::message_box(const char* title, const char* message) {
 /*  int result = MessageBox(NULL, message, title,
                           MB_YESNO | MB_ICONERROR | MB_SYSTEMMODAL | MB_DEFAULT_DESKTOP_ONLY);
 			  */

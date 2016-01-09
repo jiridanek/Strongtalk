@@ -47,8 +47,7 @@ void PcDesc::print(nmethod* nm) {
 	  this, real_pc(nm), scope, (long) byteCode);
 }
 
-bool PcDesc::verify(nmethod* nm) {
-  Unused(nm);
+bool PcDesc::verify(nmethod* /*nm*/) {
   return true;
 }
 

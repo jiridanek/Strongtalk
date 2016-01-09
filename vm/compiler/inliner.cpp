@@ -141,7 +141,7 @@ bool InliningPolicy::isBuiltinMethod() const {
   const bool isArr = klass == Universe::objArrayKlassObj()  ||
     klass == Universe::byteArrayKlassObj() ||
     klass == Universe::symbolKlassObj()    ||
-    false;	// probably should add doubleByteArray et al
+    false;	// TODO: probably should add doubleByteArray et al
   if (isArr && isCriticalArraySelector(sel)) return true;
 
   const bool isBool = klass == Universe::trueObj()->klass() || klass == Universe::falseObj()->klass();
@@ -554,8 +554,8 @@ Expr* Inliner::inlineMerge(SendInfo* info) {
 
   if (res && res->isMergeExpr()) res->setNode(merge, info->resReg);
 
-  assert( info->needRealSend &&  others->length() ||
-    !info->needRealSend && !others->length(), "inconsistent");
+  assert( (info->needRealSend &&  others->length()) ||
+          (!info->needRealSend && !others->length()), "inconsistent");
 
   if (useUncommonBranchForUnknown) {
     // generate an uncommon branch for the unknown case, not a send
@@ -810,9 +810,9 @@ Expr* Inliner::typePredict() {
   // NB: all non-predicted cases exit this function early
   Expr* r = _info->rcvr;
   if (!(r->isUnknownExpr() ||
-    r->isMergeExpr() &&
+            (r->isMergeExpr() &&
     ((MergeExpr*)r)->exprs->length() == 1 &&
-    ((MergeExpr*)r)->exprs->at(0)->isUnknownExpr())) {
+    ((MergeExpr*)r)->exprs->at(0)->isUnknownExpr()))) {
       // r already has a type (e.g. something predicted via PICs)
       // trust that information more than the static type prediction
       // NB: UnknownExprs are sometimes merged into a MergeExpr, that's why the above
@@ -845,7 +845,7 @@ Expr* Inliner::typePredict() {
   return r;
 }
 
-extern bool SuperSendsAreAlwaysInlined = true;	// remove when removing super hack
+extern bool SuperSendsAreAlwaysInlined = true;	// todo: remove when removing super hack
 
 InlinedScope* Inliner::tryLookup(Expr* rcvr) {
   // try to lookup the send to receiver rcvr and determine if it should be inlined;
@@ -902,7 +902,7 @@ InlinedScope* Inliner::tryLookup(Expr* rcvr) {
   return callee;
 }
 
-char* Inliner::checkSendInPrimFailure() {
+const char* Inliner::checkSendInPrimFailure() {
   // The current send could be inlined, but it is in a primitive failure block.  Decide
   // if it really should be inlined (return NULL if so, msg if not).
   RScope* rs = sender->rscope;

@@ -103,7 +103,7 @@ void methodKlass::oop_print_on(oop obj, outputStream* st) {
     st->cr();
   }
 
-  // incovation counter
+  // invocation counter
   st->fill_to(indent_col);
   st->print("invocation:");
   st->fill_to(value_col);

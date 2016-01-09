@@ -81,9 +81,8 @@ void sweepTrigger() {
   };
 }
 
-static void idOverflowError(int delta) {
-  Unused(delta);
-  // fix this - maybe eliminate nmethod IDs altogether?
+static void idOverflowError(int /*delta*/) {
+  //TODO: fix this - maybe eliminate nmethod IDs altogether?
   fatal("zone: nmethod ID table overflowed");
 }
 
@@ -191,8 +190,7 @@ int zone::flushNextMethod(int needed) {
   return freed;
 }
 
-void moveInsts(char* from, char* to, int size) {
-  Unused(size);
+void moveInsts(char* from, char* to, int /*size*/) {
   nmethod* n = (nmethod*) from;
   nmethod* nTo = (nmethod*)to;
   

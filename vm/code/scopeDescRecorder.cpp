@@ -600,7 +600,7 @@ class TopLevelBlockScopeNode: public ScopeDescNode {
   u_char code() { return TOPLEVELBLOCK_CODE; }
 
   TopLevelBlockScopeNode(methodOop  method, LogicalAddress* receiver_location, klassOop receiver_klass, bool allocates_compiled_context)
-  : ScopeDescNode(method, allocates_compiled_context, false, 0, NULL, true) {
+  : ScopeDescNode(method, allocates_compiled_context, 0, false, NULL, true) {
     this->receiver_location = receiver_location;
     this->receiver_klass    = receiver_klass;
   }

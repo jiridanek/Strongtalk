@@ -686,7 +686,7 @@ class blockNode : public codeNode {
     output->print("[");
     astNode* p = scope->params();
     if (p) { 
-      if (split = output->remaining() < p->width(output) + output->width_of_space()) {
+      if ((split = output->remaining() < p->width(output) + output->width_of_space())) {
         output->inc_newline();
         p->print(output);
         output->newline();

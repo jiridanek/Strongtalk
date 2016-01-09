@@ -575,7 +575,7 @@ void os::initialize_system_info() {
 }
 
 // 1 reference - memory/error.cpp
-int os::message_box(char* title, char* message) {
+int os::message_box(const char* title, const char* message) {
 	return 0;
 }
 

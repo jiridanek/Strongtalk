@@ -103,7 +103,7 @@ void process_settings_file(char* file_name, bool quiet) {
 }
 
 void print_credits() {
-  // string minimaly encrypted to make it more difficult to
+  // string minimally encrypted to make it more difficult to
   // tamper with it by looking for it in the executable...
   const char credits[] = "\
 \x11\x5a\x04\x1e\x7a\x76\x08\x38\x0b\x6e\x5b\x50\x1e\x04\x2e\x34\x6b\x21\x47\x2e\
@@ -115,7 +115,7 @@ void print_credits() {
   int mask = 0xa729b65d;
   for (int i = 0; i < sizeof(credits) - 1; i++) {
     fputc((credits[i] ^ mask) & 0x7f, stdout);
-    mask = (mask << 1) | (mask >> 31) & 1; // rotate mask
+    mask = (mask << 1) | ((mask >> 31) & 1); // rotate mask
   }
 }
 

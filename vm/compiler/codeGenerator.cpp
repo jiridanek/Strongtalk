@@ -1678,7 +1678,7 @@ void CodeGenerator::generateArrayLoopTests(LoopHeaderNode* node, Label& failure)
         // test lower bound
         //
 	if (lo->loc == unAllocated) {
-	  
+      // TODO(jirka): this seems unfinished
 	} else {
 	  //
 	}

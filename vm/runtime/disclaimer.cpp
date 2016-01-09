@@ -77,7 +77,7 @@ void Disclaimer::initialize() {
   const int xsum = -2020472186; // change this when changing _msg
   int s = 0;
   for (char* p = _msg; *p != '\x0'; p++)
-    s = ((s << 3) | (s >> 29) & 0x7) ^ *p;
+    s = ((s << 3) | ((s >> 29) & 0x7)) ^ *p;
   if (s != xsum) {
     if (is_product()) {
       // VM has been hacked => terminate immediately.

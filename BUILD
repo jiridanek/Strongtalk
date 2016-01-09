@@ -6,7 +6,7 @@ TEST_SRC_DIR 	= "test"
 TEST_INCL_PATH = ["-I"+TEST_SRC_DIR+"/runtime", "-I"+TEST_SRC_DIR+"/utilities", "-I"+TEST_SRC_DIR+"/memory"]
 
 DEFINES = ["-DDELTA_COMPILER", "-DASSERT", "-DDEBUG", "-D__LINUX__"]
-COPTS = ["-m32", "-fno-rtti", "-Wno-write-strings", "-fno-operator-names", "-fms-extensions"]
+COPTS = ["-O", "-m32", "-fno-rtti", "-Wno-write-strings", "-fno-operator-names", "-fms-extensions"]
 
 #https://groups.google.com/forum/#!topic/bazel-discuss/8Snn9hLuSqo
 
@@ -21,7 +21,8 @@ cc_library(
 
 cc_library(
     name = "libstrongtalk",
-    srcs = glob(["vm/**/*.cpp"], exclude=["vm/runtime/main.cpp"]),
+    hdrs = glob(["build/incls/*.incl"]) + ["vm/prims/prims.inc"],
+    srcs = glob(["vm/**/*.cpp", "vm/**/*.hpp"], exclude=["vm/runtime/main.cpp"]),
     copts = INCL_PATH + COPTS + DEFINES,
     linkopts = ["-m32", "-lpthread", "-ldl", "-lrt", "-lm"],
 )
@@ -36,21 +37,18 @@ cc_binary(
     data = ["strongtalk.bst"],
 )
 
+# BEWARE: easyunit exists with 0 even with failures
 cc_test(
     name = "strongtalk-test",
-    srcs = glob(["test/**/*.cpp"], exclude=[
-        "test/compiler/compiler_tests.cpp",
-        "test/interpreter/missingMethodBuilderTest.cpp",
-        "test/memory/contextKlassTests.cpp",
-        "test/memory/methodLookupTests.cpp",
-        "test/memory/proxyPrimsTest.cpp",
-        "test/prims/alienIntegerCallout0Tests.cpp",
-        "test/prims/alienIntegerCallout1Tests.cpp",
-        "test/prims/alienIntegerCallout2Tests.cpp",
-        "test/prims/alienIntegerCallout*Tests.cpp",    # up to 7
-        "test/prims/byteArrayPrimsTests.cpp",
-        "test/prims/indirectAlienPrimsTests.cpp",
-        "test/prims/pointerAlienPrimsTest.cpp",
+    srcs = glob(["test/**/*.cpp", "test/**/*.hpp"], exclude=[
+        "test/compiler/compiler_tests.cpp", # CRASH
+        "test/interpreter/missingMethodBuilderTest.cpp", # CRASH -- differs from cmake version
+        "test/memory/contextKlassTests.cpp", # CRASH
+        "test/memory/methodLookupTests.cpp", # vm shows errors, tests pass
+        "test/memory/proxyPrimsTest.cpp", # vm shows errors, tests pass
+        "test/prims/alienIntegerCallout0Tests.cpp", # FAILS
+        "test/prims/alienIntegerCallout1Tests.cpp", # FAILS
+        "test/prims/byteArrayPrimsTests.cpp", # FAILS
     ]),
     copts = INCL_PATH + TEST_INCL_PATH + COPTS + DEFINES,
     #linkstatic=0,

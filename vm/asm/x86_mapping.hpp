@@ -68,9 +68,9 @@ class Mapping: AllStatic {
   static Register asRegister(Location loc)		{ return Register(loc.number(), ' '); }
 
   // predicates
-  static bool isTemporaryRegister(const Location loc)	{ return false; }	// fix this
+  static bool isTemporaryRegister(const Location loc)	{ return false; }	// TODO: fix this
   static bool isLocalRegister(const Location loc)	{ return _localRegisterIndex[loc.number()] != -1; }
-  static bool isTrashedRegister(const Location loc)	{ return true; }	// fix this
+  static bool isTrashedRegister(const Location loc)	{ return true; }	// TODO: fix this
 
   static bool isNormalTemporary(Location loc);
   static bool isFloatTemporary(Location loc);

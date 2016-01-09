@@ -27,7 +27,7 @@ OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISE
 //   1) embedded oops     (isOop()          == true)
 //   2) inline caches     (isIC()           == true)
 //   3) primitive caches  (isPrimitive()    == true)
-//   4) uncommom traps    (isUncommonTrap() == true)
+//   4) uncommon traps    (isUncommonTrap() == true)
 //   5) runtime calls     (isRuntimeCall()  == true)
 //   6) internal word ref (isInternalWord() == true) 
 //   7) external word ref (isExternalWord() == true)

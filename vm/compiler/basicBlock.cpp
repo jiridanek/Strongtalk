@@ -43,6 +43,7 @@ int  BB::nPredecessors()const { return first->nPredecessors(); }
 bool BB::isSuccessor  (const BB* bb) const { return last->isSuccessor(bb->first); }
 bool BB::isPredecessor(const BB* bb) const { return first->isPredecessor(bb->last); }
 
+// TODO(jirka): remove this temporary hack
 // note: the functions below are defined here rather than in PReg to localize
 // this temporary hack
 const int MaxSearch = 50;	// max. # of nodes to search backwards
@@ -64,7 +65,7 @@ NonTrivialNode* findDefinitionOf(Node* endNode, const PReg* r, int max = MaxSear
       for (int j = merge->nPredecessors() - 1; j >= 0; j--) {
 	Node* prev = merge->prev(j);
 	NonTrivialNode* cand = findDefinitionOf(prev, r, max - i);
-	if (cand == NULL || candidate && cand != candidate) return NULL;
+	if (cand == NULL || (candidate && cand != candidate)) return NULL;
 	candidate = cand;
       }
       return candidate;	// all paths lead to the same candidate
@@ -441,7 +442,7 @@ void BB::localAlloc(GrowableArray<BitVector*>* hardwired,
       } else if (localSrc && localDest) {
 	// both regs are local and unallocated - put them in same
 	// equivalence class
-	// fix this - must check for overlapping live ranges first
+	// FIXME: fix this - must check for overlapping live ranges first
       } else {
 	// non-local registers - skip
       }

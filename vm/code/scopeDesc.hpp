@@ -196,7 +196,7 @@ class MethodScopeDesc : public ScopeDesc {
   LookupKey* key() const			{ return (LookupKey*)&_key; }
   klassOop selfKlass() const			{ return _key.klass(); }
 
-  ScopeDesc* parent(bool cross_nmethod_boundary = false) const { return NULL; }
+  ScopeDesc* parent(bool /*cross_nmethod_boundary*/ = false) const { return NULL; }
 
   // printing support
   void printName();

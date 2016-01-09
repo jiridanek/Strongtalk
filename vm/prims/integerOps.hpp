@@ -79,6 +79,8 @@ class Integer: ValueObj {
 // can be computed via the corresponding functions.
 
 class IntegerOps: AllStatic {
+    static const int   digitBitLength = sizeof(Digit) * 8;
+  static const Digit oneB = 0xFFFFFFFF;
  public:
   static inline Digit as_Digit(char c);
   static inline char  as_char(int i);
@@ -176,3 +178,39 @@ class IntegerOps: AllStatic {
   // testing/debugging
   static void self_test();
 };
+
+
+
+
+inline Digit IntegerOps::xpy(Digit x, Digit y, Digit& carry) {
+  // returns (x + y + c) mod B; sets carry = (x + y + c) div B
+
+  DoubleDigit lx = x;
+  DoubleDigit r = lx + y + carry;
+  carry = r >> digitBitLength;
+  return (Digit)(r  & oneB);
+}
+
+inline Digit IntegerOps::xmy(Digit x, Digit y, Digit& carry) {
+  // returns (x - y - c) mod B; sets carry = -((x - y - c) div B)
+  DoubleDigit lx = x;
+  DoubleDigit r = lx - y - carry;
+  carry = r >> digitBitLength & 1;
+  return Digit(r  & oneB);
+}
+
+inline Digit IntegerOps::axpy(Digit a, Digit x, Digit y, Digit& carry) {
+  // returns (a*x + y + c) mod B; sets carry = (a*x + y + c) div B
+  DoubleDigit lx = x;
+  DoubleDigit r = (lx * a) + y + carry;
+  carry = r >> digitBitLength;
+  return Digit(r  & oneB);
+}
+
+inline Digit IntegerOps::xdy(Digit x, Digit y, Digit& carry) {
+  // returns (carry*B + x) div y; sets carry = (carry*B + x) mod y
+  DoubleDigit c = carry;	// make sure that carry is used below and not &carry
+  DoubleDigit total = ((c << digitBitLength) + x);
+  carry = total % y;
+  return Digit((total / y) & oneB);
+}

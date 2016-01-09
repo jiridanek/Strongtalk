@@ -91,11 +91,11 @@ class RNullScope : public RScope {
   RNullScope() : RScope(NULL, 0) 			{}
   RNullScope(RNonDummyScope* sender, int bci) : RScope(sender, bci) {}
   bool isNullScope() const	    			{ return true; }
-  bool equivalent(InlinedScope* s) const  		{ Unused(s);  return false; }
-  bool equivalent(LookupKey* l) const  			{ Unused(l);  return false; }
+  bool equivalent(InlinedScope* /*s*/) const  		{ return false; }
+  bool equivalent(LookupKey* /*l*/) const  			{ return false; }
   RScope* subScope(int bci, LookupKey* l) const  	{ return (RScope*)this; }
   GrowableArray<RScope*>* subScopes(int bci) const;
-  bool hasSubScopes(int bci) const			{ Unused(bci);  return false; }
+  bool hasSubScopes(int /*bci*/) const			{ return false; }
   bool isUncommonAt(int bci) const 			{ return false; }
   bool isNotUncommonAt(int bci) const 			{ return false; }
   klassOop receiverKlass() const			{ ShouldNotCallThis(); return 0; }
@@ -145,6 +145,7 @@ class RNonDummyScope : public RScope {
  protected:
   virtual void constructSubScopes(bool trusted);
   virtual int scopeID() const				{ ShouldNotCallThis(); return 0; }
+    /// should the PICs in m be trusted?
   static bool trustPICs(methodOop m);
   void printSubScopes() const;
   static RNonDummyScope* constructRScopes(const nmethod* nm, bool trusted = true, int level = 0);
@@ -272,8 +273,8 @@ class RUntakenScope : public RNonDummyScope {
   RUntakenScope(RNonDummyScope* sender, PcDesc* pc, bool isUnlikely);
   bool isUntakenScope() const    		{ return true; }
   bool isUnlikely() const			{ return isUncommon; }
-  bool equivalent(InlinedScope* s) const	{ Unused(s);  return false; }
-  bool equivalent(LookupKey* l) const  		{ Unused(l);  return false; }
+  bool equivalent(InlinedScope* /*s*/) const	{ return false; }
+  bool equivalent(LookupKey* /*l*/) const  		{ return false; }
   Expr* receiverExpr(PReg* p) const;
   methodOop method()       const		{ ShouldNotCallThis(); return NULL; }
   LookupKey* key()         const		{ ShouldNotCallThis(); return NULL; }

@@ -150,7 +150,7 @@ int InterpretedIC::nof_arguments() const {
     case Bytecodes::recv_2_args: return 2;
     case Bytecodes::recv_n_args: {
       int n = selector()->number_of_arguments();
-      assert(n = int(*(p+1)), "just checkin'..."); // send_code_addr()+1 must hold the number of arguments
+      assert(n == int(*(p+1)), "just checkin'..."); // send_code_addr()+1 must hold the number of arguments
       return n;
                                  }
     case Bytecodes::args_only: return selector()->number_of_arguments();

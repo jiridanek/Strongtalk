@@ -83,7 +83,7 @@ class CodeSweeper : public Sweeper {
  protected:
   int CodeSweeperInterval;    // time interval (sec) between starting zone sweep; computed from half-life time
   double decayFactor;	      // decay factor for invocation counts
-  int oldHalfLifeTime;	      // old half-life time (to dectect changes in half-life setting)
+  int oldHalfLifeTime;	      // old half-life time (to detect changes in half-life setting)
   int fractionPerTask;	      // a task invocation does (1 / fractionPerTask) of the entire work
 
   void  updateInterval();      // check for change in half-life setting

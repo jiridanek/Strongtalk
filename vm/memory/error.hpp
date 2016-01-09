@@ -78,10 +78,10 @@ extern "C" {
 #define Unimplemented()          { report_unimplemented          (FILE_INFO, LINE_INFO); DEBUG_EXCEPTION; }
 
 
-void report_assertion_failure(char* code_str, char* file_name, int line_no, char* message) CLANG_ANALYZER_NORETURN;
-void report_fatal(char* file_name, int line_no, char* format, ...) CLANG_ANALYZER_NORETURN;
-void report_should_not_call(char* file_name, int line_no) CLANG_ANALYZER_NORETURN;
-void report_should_not_reach_here(char* file_name, int line_no) CLANG_ANALYZER_NORETURN;
-void report_subclass_responsibility(char* file_name, int line_no) CLANG_ANALYZER_NORETURN;
-void report_unimplemented(char* file_name, int line_no) CLANG_ANALYZER_NORETURN;
+void report_assertion_failure(const char* code_str, const char* file_name, int line_no, const char* message) CLANG_ANALYZER_NORETURN;
+void report_fatal(const char* file_name, int line_no, const char* format, ...) CLANG_ANALYZER_NORETURN;
+void report_should_not_call(const char* file_name, int line_no) CLANG_ANALYZER_NORETURN;
+void report_should_not_reach_here(const char* file_name, int line_no) CLANG_ANALYZER_NORETURN;
+void report_subclass_responsibility(const char* file_name, int line_no) CLANG_ANALYZER_NORETURN;
+void report_unimplemented(const char* file_name, int line_no) CLANG_ANALYZER_NORETURN;
 void report_vm_state();

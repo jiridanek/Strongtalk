@@ -818,7 +818,7 @@ extern "C" void unpack_frame_array() {
   ResourceMark rm;
 
   int* pc_addr = (int*) new_sp - 1;
-  assert(*pc_addr = -1, "just checking");
+  assert(*pc_addr == -1, "just checking");
 
   trace_deoptimization_start();
 

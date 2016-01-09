@@ -188,7 +188,7 @@ void Recompilation::doit() {
   }
     //slr debugging
   
-    if (true || !_recompiledTrigger) {	  // fix this
+    if (true || !_recompiledTrigger) {	  // FIXME: fix this
       // reset the trigger's counter
       if (isCompiled() /*&& !_nm->isUncommonRecompiled()*/) {
 	// don't 

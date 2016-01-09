@@ -160,8 +160,7 @@ bool RInlinedScope::equivalent(InlinedScope* s) const {
     ss->sender()->rscope == sender();
 }
 
-bool RPICScope::equivalent(InlinedScope* s) const {
-  Unused(s);
+bool RPICScope::equivalent(InlinedScope* /*s*/) const {
   // an RPICScope represents a non-inlined scope, so it can't be equivalent
   // to any InlinedScope
   return false;
@@ -464,7 +463,6 @@ void RNonDummyScope::constructSubScopes(bool trusted) {
 
 
 bool RNonDummyScope::trustPICs(methodOop m) {
-  // should the PICs in m be trusted?
   symbolOop sel = m->selector();
   if (sel == vmSymbols::plus() || sel == vmSymbols::minus() ||
     sel == vmSymbols::multiply() || sel == vmSymbols::divide()) {

@@ -80,16 +80,7 @@ inline int byte_size(void* from, void* to) {
   return (char*) to - (char*) from;
 }
 
-// If your compiler or lint supports a pragma informing it that a 
-// variable is unused, redefine these appropriately
-/*
-#ifdef __GNUC__
-  // GNU 2.6.2 can't disambiguate the overloaded Unused function
-  #define Unused(x)	    
-#else
-  //#endif
-  */
-
-  inline void Unused(int x) { x, 0; }
-  inline void Unused(void *x) { x, 0; }
-
+// unused variable warnings
+// TODO: see if not naming unused variables is enough
+//	CONCLUSION: it is not in case it is unused except in an assert,
+//   GCC has __attribute__((unused))

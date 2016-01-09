@@ -266,9 +266,6 @@ int Interpreter::get_invocation_counter_limit() {
   return get_unsigned_bitfield(*_invocation_counter_addr, methodOopDesc::_invocation_count_offset, methodOopDesc::_invocation_count_width);
 }
 
-static int* loop_counter_addr() {  }
-static int* loop_counter_limit_addr();
-
 // entry points accessors
 
 char* Interpreter::access(char* entry_point) {

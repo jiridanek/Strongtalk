@@ -52,8 +52,7 @@ void set_symbolKlass_vtbl(Klass* k) {
   k->set_vtbl_value(o.vtbl_value());
 }
 
-oop symbolKlass::scavenge(oop obj) {
-  Unused(obj);
+oop symbolKlass::scavenge(oop /*obj*/) {
   ShouldNotCallThis(); // shouldn't need to scavenge canonical symbols
                        // (should be tenured)
   return NULL;

@@ -63,18 +63,18 @@ class Expr : public PrintableResourceObj {	// abstract base class
   
   virtual bool hasKlass() const			{ return false; }
   virtual int  nklasses() const			= 0;	// number of klasses contained in expr
-  virtual bool really_hasKlass(InlinedScope* s) const { Unused(s);  return hasKlass(); }
+  virtual bool really_hasKlass(InlinedScope* /*s*/) const { return hasKlass(); }
   virtual klassOop klass() const		{ ShouldNotCallThis(); return 0; }
   virtual bool hasConstant() const		{ return false; }
   virtual oop constant() const			{ ShouldNotCallThis(); return 0; }
   virtual bool containsUnknown()		= 0;
-  virtual Expr* makeUnknownUnlikely(InlinedScope* s) {
-    Unused(s); ShouldNotCallThis(); return 0;}
+  virtual Expr* makeUnknownUnlikely(InlinedScope* /*s*/) {
+	ShouldNotCallThis(); return 0;}
   virtual bool isUnknownUnlikely() const	{ return false; }
   virtual bool needsStoreCheck() const		{ return true; }
   
   virtual UnknownExpr* findUnknown() const 	{ return NULL; }
-  virtual Expr* findKlass(klassOop map) const	{ Unused(map);  return NULL; }
+  virtual Expr* findKlass(klassOop /*map*/) const	{ return NULL; }
   
   virtual Expr* asReceiver() const;
   virtual KlassExpr* asKlassExpr() const 	{ ShouldNotCallThis(); return NULL; }
@@ -272,9 +272,9 @@ class ContextExpr : public Expr {
   bool	isContextExpr() const			{ return true; }
   bool	containsUnknown()			{ ShouldNotCallThis(); return false; }
   int   nklasses() const			{ ShouldNotCallThis(); return 1; }  
-  Expr*	shallowCopy(PReg* p, Node* n) const	{ ShouldNotCallThis(); return (Expr*)this; }
-  Expr* copyWithout(Expr* e) const		{ ShouldNotCallThis(); return (Expr*)this; }
-  Expr*	mergeWith(Expr* other, Node* n) 	{ ShouldNotCallThis(); return (Expr*)this; }
+  Expr*	shallowCopy(PReg* /*p*/, Node* /*n*/) const	{ ShouldNotCallThis(); return (Expr*)this; }
+  Expr* copyWithout(Expr* /*e*/) const		{ ShouldNotCallThis(); return (Expr*)this; }
+  Expr*	mergeWith(Expr* /*other*/, Node* /*n*/) 	{ ShouldNotCallThis(); return (Expr*)this; }
   Expr*	convertToKlass(PReg* p, Node* n) const	{ return shallowCopy(p, n); };
   bool	equals(Expr* other) const		{ ShouldNotCallThis(); return false; }
   void	print();

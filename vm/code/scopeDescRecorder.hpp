@@ -319,17 +319,17 @@ class nameDescHeaderByte : public ValueObj {
     assert( code <= max_code,  "code to high");
     assert( i    <= no_index,  "index to high");
     byte = addBits(i << code_width, code);
-    if (is_last) byte = setNth(byte, is_last_bit_num);
+    if (is_last) setNth(byte, is_last_bit_num);
   }
 
   void pack_illegal(bool is_last) {
     byte = addBits(illegal_index << code_width, 0);
-    if (is_last) byte = setNth(byte, is_last_bit_num);
+    if (is_last) setNth(byte, is_last_bit_num);
   }
 
   void pack_termination(bool is_last) {
     byte = addBits(termination_index << code_width, 0);
-    if (is_last) byte = setNth(byte, is_last_bit_num);
+    if (is_last) setNth(byte, is_last_bit_num);
   }
 
   void unpack(u_char value) { byte = value; }
@@ -364,12 +364,12 @@ class scopeDescHeaderByte : public ValueObj {
   void pack(u_char code, bool lite, bool args, bool temps, bool context_temps, bool expr_stack, bool has_compiled_context) {
     assert( code <= max_code, "code to high");
     byte = code;
-    if (lite)                   byte = setNth(byte, lite_bit_num);
-    if (args)                   byte = setNth(byte, args_bit_num);
-    if (temps)                  byte = setNth(byte, temps_bit_num);
-    if (context_temps)          byte = setNth(byte, context_temps_bit_num);
-    if (expr_stack)             byte = setNth(byte, expr_stack_bit_num);
-    if (has_compiled_context)   byte = setNth(byte, context_bit_num);
+    if (lite)                   setNth(byte, lite_bit_num);
+    if (args)                   setNth(byte, args_bit_num);
+    if (temps)                  setNth(byte, temps_bit_num);
+    if (context_temps)          setNth(byte, context_temps_bit_num);
+    if (expr_stack)             setNth(byte, expr_stack_bit_num);
+    if (has_compiled_context)   setNth(byte, context_bit_num);
   }
 
   void unpack(u_char value) { byte = value; }

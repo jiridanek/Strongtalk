@@ -100,7 +100,7 @@ class Event: public CHeapObj {
             _signalled = false;
             pthread_cond_signal(&notifier);
         }
-        bool inline waitFor() {
+        void inline waitFor() {
             Lock mark(&mutex);
             while (!_signalled)
               pthread_cond_wait(&notifier, &mutex);
@@ -561,7 +561,7 @@ void os::initialize_system_info() {
 }
 
 // 1 reference - memory/error.cpp
-int os::message_box(char* title, char* message) {
+int os::message_box(const char* /*title*/, const char* /*message*/) {
   return 0;
 }
 

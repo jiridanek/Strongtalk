@@ -89,7 +89,7 @@ OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISE
     BB* bb;		// BB containing some of PReg's defs/uses
     int index;		// index into BB's BBDUTable
 
-    PRegBBIndex(BB* b, int i, PReg* pr) { Unused(pr);  bb = b; index = i; }
+	PRegBBIndex(BB* b, int i, PReg* /*pr*/) { bb = b; index = i; }
     void print_short();
     void print();
   };
