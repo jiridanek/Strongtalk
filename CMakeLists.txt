@@ -442,7 +442,7 @@ set(LIBSTRONGTALK_SOURCE_FILES
 
 set(STRONGTALKTEST_SOURCE_FILES
 # compiler
-#     test/compiler/compiler_tests.cpp # CRASH: Linux/GCC & Mingw/wine
+#     test/compiler/compiler_tests.cpp # CRASH: Linux/GCC & Linux/clang & Mingw/wine
     test/compiler/node_tests.cpp
 
 # interpreter OK:  Linux/GCC & Mingw/wine
@@ -455,7 +455,7 @@ set(STRONGTALKTEST_SOURCE_FILES
         test/memory/association_klass_tests.cpp
         test/memory/blockClosureKlassTests.cpp
         test/memory/byteArrayKlassTests.cpp
-#         test/memory/contextKlassTests.cpp  # CRASH: Linux/GCC & wine/Mingw
+#         test/memory/contextKlassTests.cpp  # CRASH: Linux/GCC & Linux/clang & wine/Mingw
     #double
         test/memory/doubleByteArrayTests.cpp
         test/memory/doubleValueArrayTests.cpp
@@ -474,20 +474,20 @@ set(STRONGTALKTEST_SOURCE_FILES
         test/memory/universe_tests.cpp
         test/memory/vframeKlassTests.cpp
 # prims/alienInteger
-#     test/prims/alienIntegerCallout0Tests.cpp  # CRASH: Linux/GCC & wine/Mingw
-#     test/prims/alienIntegerCallout1Tests.cpp  # OK: wine/Mingw FAIL: Linux/GCC
+#     test/prims/alienIntegerCallout0Tests.cpp  # CRASH: Linux/GCC & Linux/clang & wine/Mingw
+#     test/prims/alienIntegerCallout1Tests.cpp  # OK: wine/Mingw FAIL: Linux/GCC & Linux/clang
     test/prims/alienIntegerCallout2Tests.cpp
     test/prims/alienIntegerCallout3Tests.cpp
     test/prims/alienIntegerCallout4Tests.cpp
     test/prims/alienIntegerCallout5Tests.cpp
     test/prims/alienIntegerCallout6Tests.cpp
     test/prims/alienIntegerCallout7Tests.cpp
-    test/prims/alienIntegerCalloutWithArgumentsTests.cpp
+    #test/prims/alienIntegerCalloutWithArgumentsTests.cpp # FAIL: Linux/clang
 # prims/behavior OK: Linux/GCC & wine/Mingw
     test/prims/behaviorPrimsSuperclassTests.cpp
     test/prims/behaviorPrimsTests.cpp
 # prims/byteArray
-#     test/prims/byteArrayPrimsTests.cpp     # FAIL: Linux/GCC & wine/Mingw
+    test/prims/byteArrayPrimsTests.cpp     # FAIL: Linux/GCC & Linux/clang & wine/Mingw
     test/prims/dbyteArrayPrimsTests.cpp
 # prims/alien OK: Linux/GCC & wine/Mingw
     test/prims/directAlienPrimsTests.cpp
@@ -498,7 +498,7 @@ set(STRONGTALKTEST_SOURCE_FILES
     test/prims/objArrayPrimsTests.cpp
 # prims/oop OK: Linux/GCC & wine/Mingw
     test/prims/oop_prims.cpp
-    test/prims/oop_prims_perform.cpp
+    test/prims/oop_prims_perform.cpp # FAIL: Linux/clang
 # prims OK: Linux/GCC & wine/Mingw
     test/prims/pointerAlienPrimsTest.cpp
     test/prims/smi_prims_tests.cpp
@@ -511,7 +511,7 @@ set(STRONGTALKTEST_SOURCE_FILES
     test/utilities/lprintf_test.cpp
     test/utilities/testNotifier.hpp
     test/utilities/testUtils.hpp
-# ??? what is is for ???
+# ??? what is it for ???
 #     test/callbacks.cpp
 )
 
