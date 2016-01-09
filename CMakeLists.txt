@@ -7,7 +7,19 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -m32 -fno-rtti -Wno-write-str
 # http://www.artificialworlds.net/blog/2014/07/18/best-gcc-warning-flags-for-compiling-c/
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wredundant-decls -Wcast-align -Wmissing-declarations -Wmissing-include-dirs -Wswitch-enum -Wswitch-default -Wextra -Wall -Werror -Winvalid-pch -Wredundant-decls -Wformat=2 -Wmissing-format-attribute -Wformat-nonliteral")
 # TODO: gragually enable
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-error -Wno-unused-parameter -Wno-reorder -Wno-redundant-decls -Wno-missing-declarations -Wno-unused-variable -Wno-type-limits -Wno-unused-function -Wno-unused-but-set-variable -Wno-switch-default -Wno-switch -Wno-format-security -Wno-format-nonliteral -Wno-switch-enum -Wno-conversion-null -Wno-format -Wno-sign-compare -Wno-empty-body -Wno-char-subscripts -Wno-suggest-attribute=format")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-error -Wno-unused-parameter -Wno-reorder -Wno-redundant-decls -Wno-missing-declarations -Wno-unused-variable -Wno-type-limits -Wno-unused-function -Wno-switch-default -Wno-switch -Wno-format-security -Wno-format-nonliteral -Wno-switch-enum -Wno-conversion-null -Wno-format -Wno-sign-compare -Wno-empty-body -Wno-char-subscripts")
+# https://stackoverflow.com/questions/10046114/in-cmake-how-can-i-test-if-the-compiler-is-clang
+if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+  # using Clang
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-overloaded-virtual -Wno-cast-align -Wno-undefined-bool-conversion -Wno-sometimes-uninitialized -Wno-shift-negative-value -Wno-constant-conversion -Wno-unused-private-field -Wno-extern-initializer -Wno-new-returns-null -Wno-tautological-constant-out-of-range-compare -Wno-tautological-undefined-compare")
+elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
+  # using GCC
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-unused-but-set-variable -Wno-suggest-attribute=format")
+elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Intel")
+  # using Intel C++
+elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
+  # using Visual Studio C++
+endif()
 
 # https://gcc.gnu.org/onlinedocs/gcc/Gcov-and-Optimization.html
 #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fprofile-arcs -ftest-coverage")
